@@ -1,0 +1,58 @@
+{% extends 'base.html' %} {% load static %} {% block content%}
+
+<!-- ======= Header ======= -->
+<header id="header">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+
+      <div class="logo">
+        <h1 class="text-light"><a href=""><span>CoWin-Helper</span></a></h1>
+        <!-- Uncomment below if you prefer to use an image logo -->
+        <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+      </div>
+
+      <div class="contact-link float-right">
+        <a href="" class="scrollto"></a>
+      </div>
+
+    </div>
+  </header><!-- End #header -->
+
+<!-- ======= Hero Section ======= -->
+<section id="hero">
+    <div class="hero-container">
+        <img src="{% static 'assets/img/logo-vax.png'%}" alt="" class="img-fluid">
+        <h1></h1>
+        <h2></h2>
+        
+        <h2>Indian Vaccines for COVID-19 are safe and are the most effective way to provide protection against COVID-19
+        </h2>
+        
+        <form action="{% url 'search' %}" class="php-email-form">
+            <div class="row no-gutters">
+                <div class="col-md-6 form-group pr-md-1">
+                    <input type="text" name="pincode" class="form-control" maxlength="6" minlength="6"
+                        pattern="^[1-9][0-9]{5}$" id="pin" placeholder="Enter Pincode" required>
+                </div>
+                <div class="col-md-6 form-group pl-md-1">
+                    <div class="wrapper">
+                        <input type="radio" name="age" id="option-1" value="45">
+                        <input type="radio" name="age" id="option-2" value="18">
+                        <label for="option-1" class="option option-1">
+                            <div class="dot"></div>
+                            <span>45+</span>
+                        </label>
+                        <label for="option-2" class="option option-2">
+                            <div class="dot"></div>
+                            <span>18+</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center"><button type="submit" class="btn btn-success">Check  <i class="bi bi-arrow-right"></i></button></div>
+        </form>
+        <p>Made by - <b>Abhinandan Mishra  </b><a href="https://github.com/AbhinandanM"><i class="bi bi-box-arrow-up-right"></i></a></p>
+    </div>
+</section>
+<!-- End Hero -->
+
+{% endblock content%}

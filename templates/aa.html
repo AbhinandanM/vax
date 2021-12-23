@@ -1,0 +1,98 @@
+{% extends 'base.html' %} {% load static %} {% block content%}
+
+<style>
+    .bg {
+        width: 100%;
+        height: 100vh;
+        background: url("{% static 'assets/img/hero-bg.jpg'%}");
+        background-size: cover;
+        position: relative;
+    }
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Vaccination Slots</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            </ul>
+            <form action="{% url 'search' %}" class="d-flex">
+                <input class="form-control me-2" name="pincode" type="text" maxlength="6" minlength="6"
+                    pattern="^[1-9][0-9]{5}$" placeholder="Enter Pincode" aria-label="Search" required>
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+{% for key, value in data %}
+{% if value|length == 0 %}
+<div class="bg">
+    <div style="text-align: center; padding-top: 20%;">
+        <h1>N0 Vaccination Slots Available Currently</h1>
+    </div>
+    <div style="text-align: center; padding-top: 2%;">
+        <h1><a href="{% url 'notify-form' %}"><button class="btn btn-success">Get Notified <i
+                        class="bi bi-bell-fill"></i></button></a></h1>
+    </div>
+</div>
+{% else %}
+{% for i in value %}
+{% if i.sessions.0.min_age_limit == age %}
+<div class="slot-tupple-sec">
+    <div class="card-block vaccine-slot-wrap">
+        <div class="tupple-top-sec">
+            <div class="tupple-left-sec">
+                <div class="centerName-tupple"> <b>{{ i.name }}</b> </div>
+                <div class="vaccine-tuple">
+                    <div class="vaccine-type">Vaccine:{{ i.sessions.0.vaccine }}</div>
+                    <div class="fee-type free-feetype">{{ i.fee_type }}</div>
+                    <div class="age-tupple">{{ i.sessions.0.min_age_limit }}</div>
+                </div>
+            </div>
+            <div class="tupple-right-sec">
+                {% if i.sessions.0.available_capacity == 0 %}
+                <div class="avl-dose">No Dose</div>
+                <div class="tupple-slot-number dose-grey">0</div>
+                {% elif 15 >= i.sessions.0.available_capacity %}
+                <div class="avl-dose">Available Dose</div>
+                <div class="tupple-slot-number dose-yellow">{{ i.sessions.0.available_capacity }}</div>
+                {% else %}
+                <div class="avl-dose">Available Dose</div>
+                <div class="tupple-slot-number dose-green">{{ i.sessions.0.available_capacity }}</div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="tupple-top-sec slot-sec">
+            <div class="slot-sec-tupple">
+                <div class="place-field-tupple">
+                    <span class="color-class1">{{ i.address|title }}, {{ i.district_name }}</span>
+                    <span class="color-class1">| {{ pincode }}</span>
+                    <span class="color-class1">| {{ i.sessions.0.date }}</span>
+                </div>
+            </div>
+            <div class="book-now">{% if i.sessions.0.available_capacity == 0 %}<a href="{% url 'notify-form' %}">Get Notified</a>{%else %}<a href="https://selfregistration.cowin.gov.in">BOOK NOW</a>{% endif %}</div>
+        </div>
+    </div>
+</div>
+{% else %}
+{% if forloop.counter == 1 %}
+<div style="text-align: center; padding-top: 20%;">
+    <h1>N0 Vaccination Slots Available for {{age}}</h1>
+</div>
+<div style="text-align: center; padding-top: 2%;">
+    <h1><a href="{% url 'notify-form' %}"><button class="btn btn-success">Get Notified <i
+                    class="bi bi-bell-fill"></i></button></a></h1>
+</div>
+{% else %}
+{% endif %}
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endfor %}
+
+{% endblock content%}
